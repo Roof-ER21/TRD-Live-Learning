@@ -12,7 +12,17 @@ import { getOutputConfig } from './output-registry';
 
 // Model configuration - using stable model
 const GEMINI_MODEL = 'gemini-2.0-flash';
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+// Get API key from Vite environment variables
+// In development: reads from .env.local as VITE_GEMINI_API_KEY
+// In production: Railway sets VITE_GEMINI_API_KEY at build time
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!API_KEY) {
+  console.error('VITE_GEMINI_API_KEY is not set. Please check your environment variables.');
+}
+
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 // ============================================
 // ROOF-ER KNOWLEDGE BASE
